@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>D ❤️ E</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #2b0a14, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+    overflow: hidden;
+    color: #fff;
+}
+
+.card {
+    background: rgba(0,0,0,0.6);
+    border-radius: 35px;
+    padding: 55px 60px;
+    text-align: center;
+    box-shadow: 0 35px 70px rgba(0,0,0,0.8);
+    max-width: 90%;
+    animation: fadeIn 1.5s ease;
+}
+
+h1 {
+    font-size: 3.2rem;
+    margin-bottom: 18px;
+}
+
+.initials {
+    font-size: 2.5rem;
+    letter-spacing: 7px;
+    margin-bottom: 30px;
+    color: #ff9bb5;
+}
+
+p {
+    font-size: 1.7rem;
+    line-height: 1.6;
+    margin-bottom: 45px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    position: relative;
+}
+
+button {
+    border: none;
+    padding: 22px 50px;
+    font-size: 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.35s ease;
+}
+
+#yes {
+    background: linear-gradient(135deg, #ff9bb5, #ff4f81);
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 25px rgba(255,79,129,0.7);
+}
+
+#yes:hover {
+    transform: scale(1.15);
+}
+
+#no {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    position: absolute;
+    right: 0;
+}
+
+/* Corazones */
+.heart {
+    position: absolute;
+    animation: float 5s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes float {
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to { transform: translateY(-750px) scale(1.7); opacity: 0; }
+}
+
+.fade-out {
+    animation: fadeOut 1.4s forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: scale(1.1); }
+}
+
+.final {
+    text-align: center;
+    animation: fadeIn 2s ease forwards;
+}
+
+.final h1 {
+    font-size: 3.4rem;
+    color: #ff9bb5;
+}
+
+.final p {
+    font-size: 2rem;
+    line-height: 1.5;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+    <h1>¿Quieres ser mi San Valentín? 💘</h1>
+    <div class="initials">D ❤️ E</div>
+    <p>
+        No es solo una pregunta…<br>
+        es una historia que quiero vivir contigo ✨
+    </p>
+
+    <div class="buttons">
+        <button id="yes">Sí 💖</button>
+        <button id="no">No 🙈</button>
+    </div>
+</div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6b0fbc88aa.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const card = document.getElementById("card");
+const music = document.getElementById("music");
+
+let noScale = 1;
+let noIndex = 0;
+const noTexts = [
+    "¿Segura? 🥺",
+    "Oye eso dolió 😢",
+    "Mi corazón 💔",
+    "Ya casi no existo 😭",
+    "Ok… me rindo 😞"
+];
+
+// NO huye + drama
+noBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * 220 - 110;
+    const y = Math.random() * 140 - 70;
+    noBtn.style.transform = `translate(${x}px, ${y}px) scale(${noScale})`;
+});
+
+noBtn.addEventListener("click", () => {
+    noScale -= 0.15;
+    if (noScale < 0.3) noScale = 0.3;
+
+    if (noIndex < noTexts.length) {
+        noBtn.textContent = noTexts[noIndex];
+        noIndex++;
+    }
+
+    noBtn.style.transform += ` scale(${noScale})`;
+});
+
+// SÍ romántico final
+yesBtn.addEventListener("click", () => {
+    music.play();
+    card.classList.add("fade-out");
+
+    setTimeout(() => {
+        card.innerHTML = `
+            <div class="final">
+                <h1>💖 Entonces es una cita 💖</h1>
+                <p>
+                    Nos vemos el <strong>28 de febrero</strong><br>
+                    para celebrar nuestra historia<br>
+                    como se merece ✨
+                </p>
+            </div>
+        `;
+        card.classList.remove("fade-out");
+        createHearts();
+    }, 1400);
+});
+
+function createHearts() {
+    for (let i = 0; i < 45; i++) {
+        setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.bottom = "0px";
+            heart.style.fontSize = (24 + Math.random() * 36) + "px";
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 5000);
+        }, i * 120);
+    }
+}
+</script>
+
+</body>
+</html>
